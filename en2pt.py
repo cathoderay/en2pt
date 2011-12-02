@@ -1,10 +1,14 @@
 #!/usr/bin/env python
+# -*- coding:utf-8 -*-
 #
 # File: en2pt.py
 # Description: translate a word from english to portuguese
 # Usage: 
-#       $ ./en2pt.py word
-#
+#    $ ./en2pt.py word
+#    1 - palavra: a) vocábulo, termo. b) fala. c) promessa.
+#    2 - conversa breve, conversação.
+#    ...
+
 # TODO: treat bold tag
 # TODO: treat bullets
 

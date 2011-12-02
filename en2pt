@@ -24,10 +24,9 @@ word = sys.argv[1]
 html = urllib2.urlopen('%s%s' % (url, word)).read()
 
 #parsing
-pars = HTMLParser.HTMLParser()
 pattern = r"<span class='descricao'>(.*)</span>"
 d = re.search(pattern, html).groups()[0]
-d = pars.unescape(d)
+d = HTMLParser.HTMLParser().unescape(d)
 d = re.split('<B> *\d+</B>', d)[1:]
 meanings = [line.strip() for line in d]
 

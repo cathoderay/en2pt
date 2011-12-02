@@ -17,8 +17,7 @@ import HTMLParser
 #searching
 url = 'http://michaelis.uol.com.br/moderno/ingles/index.php?lingua=ingles-portugues&palavra='
 word = sys.argv[1]
-r = urllib2.urlopen('%s%s' % (url, word))
-html = r.read()
+html = urllib2.urlopen('%s%s' % (url, word)).read()
 
 #parsing
 pars = HTMLParser.HTMLParser()
@@ -28,5 +27,6 @@ d = pars.unescape(d)
 d = re.split('<B> *\d+</B>', d)[1:]
 meanings = [line.strip() for line in d]
 
+#printing
 for i, meaning in enumerate(meanings):
     print "%s - %s" % (i+1, meaning)

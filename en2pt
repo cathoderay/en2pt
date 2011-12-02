@@ -9,10 +9,6 @@
 #    2 - conversa breve, conversação.
 #    ...
 
-# TODO: treat bold tag
-# TODO: treat bullets
-
-
 import re
 import sys
 import urllib2
@@ -23,13 +19,16 @@ url = 'http://michaelis.uol.com.br/moderno/ingles/index.php?lingua=ingles-portug
 word = sys.argv[1]
 html = urllib2.urlopen('%s%s' % (url, word)).read()
 
-#parsing
-pattern = r"<span class='descricao'>(.*)</span>"
-d = re.search(pattern, html).groups()[0]
-d = HTMLParser.HTMLParser().unescape(d)
-d = re.split('<B> *\d+</B>', d)[1:]
-meanings = [line.strip() for line in d]
+#patterns
+definitions = lambda s: re.sub('\\s*<B>\\s*(\\d+)\\s*</B>\\s*', '\n\\1. ', s)
+unescape    = lambda s: HTMLParser.HTMLParser().unescape(re.sub('\\s*&bull;\\s*', '\n', s))
+clear       = lambda s: re.sub('<I>(\\s*)</I>', '', re.sub('<B>(\\s*)</B>', '', s)).replace('</P>', '')
+italic      = lambda s: re.sub('<I>\\s*(.*?)\\s*</I>', '\033[92m\\1\033[0m', s)
+bold        = lambda s: re.sub('<B>\\s*(.+?)\\s*</B>', '\n  \033[94m\\1\033[0m ', s)
+format      = lambda s: italic(bold(definitions(clear(unescape(s)))))
 
-#printing
-for i, meaning in enumerate(meanings):
-    print "%s - %s" % (i+1, meaning)
+#parsing
+pattern = r"<span class='descricao'>\s*(.*?)\s*</span>"
+for s in re.findall(pattern, html):
+    print format(s)
+    print
